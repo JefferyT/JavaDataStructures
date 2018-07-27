@@ -3,12 +3,13 @@ package datastructures.concrete;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 /*
  * Jeffery Tian
  * 
  */
-public class BST<K extends Comparable<K>, V> implements Map<K, V> {
+public class BST<K extends Comparable<K>, V> {
 
     private SearchTreeNode<K, V> overallRoot;
     private int size;
@@ -16,14 +17,12 @@ public class BST<K extends Comparable<K>, V> implements Map<K, V> {
         overallRoot = null;
     }
     
-    @Override
     public void clear() {
         size = 0;
         overallRoot = null;
         
     }
     
-    @Override
     public boolean containsKey(Object key) {
         // TODO Auto-generated method stub
         return containsKey((K) key, overallRoot);
@@ -39,24 +38,10 @@ public class BST<K extends Comparable<K>, V> implements Map<K, V> {
         }
     }
 
-    @Override
     public boolean containsValue(Object arg0) {
         // TODO Auto-generated method stub
         return false;
     }
-
-    @Override
-    public Set<Entry<K, V>> entrySet() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public V get(Object arg0) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
     
     public V get(K key) {
         return get(key, overallRoot);
@@ -74,18 +59,27 @@ public class BST<K extends Comparable<K>, V> implements Map<K, V> {
         }
     }
     
-    @Override
     public boolean isEmpty() {
         // TODO Auto-generated method stub
         return false;
     }
 
-    @Override
     public Set<K> keySet() {
         // TODO Auto-generated method stub
-        return null;
+        Set<K> keySet = new TreeSet<K>();
+        
+        keySet(overallRoot, keySet);
+        return keySet;
     }
-    @Override
+    
+    private void keySet(SearchTreeNode<K, V> node, Set<K> keys) {
+        if (node != null) {
+            keys.add(node.key);
+            keySet(node.left, keys);
+            keySet(node.right, keys);
+        }
+    }
+    
     public V put(K key, V value) {
         STNWithValue<K, V> stn = put(overallRoot, key, value);
         overallRoot = stn.node;
@@ -111,26 +105,23 @@ public class BST<K extends Comparable<K>, V> implements Map<K, V> {
         return newN;
     }
     
-
-    @Override
-    public void putAll(Map<? extends K, ? extends V> arg0) {
+    public void putAll(Map<K, V> input) {
         // TODO Auto-generated method stub
-        
+        for (K key : input.keySet()) {
+            put(key, input.get(key));
+        }
     }
 
-    @Override
     public V remove(Object arg0) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    @Override
     public int size() {
         // TODO Auto-generated method stub
         return size;
     }
 
-    @Override
     public Collection<V> values() {
         // TODO Auto-generated method stub
         return null;
