@@ -53,7 +53,7 @@ public class BST<K extends Comparable<K>, V> {
     
     public boolean isEmpty() {
         // TODO Auto-generated method stub
-        return false;
+        return overallRoot == null;
     }
 
     public Set<K> keySet() {
