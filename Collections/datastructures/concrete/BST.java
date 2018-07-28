@@ -44,19 +44,11 @@ public class BST<K extends Comparable<K>, V> {
     }
     
     public V get(K key) {
-        return get(key, overallRoot);
-    }
-    
-    private V get(K key, SearchTreeNode<K, V> node) {
+        SearchTreeNode<K, V> node = getNode(key, overallRoot);
         if (node == null) {
             return null;
-        } else if (key.equals(node.key)) {
-            return node.value;
-        } else if (key.compareTo(node.key) < 0) {
-            return get(key, node.left);
-        } else {
-            return get(key, node.right);
         }
+        return node.value;
     }
     
     public boolean isEmpty() {
@@ -111,8 +103,24 @@ public class BST<K extends Comparable<K>, V> {
             put(key, input.get(key));
         }
     }
-
-    public V remove(Object arg0) {
+    
+    private SearchTreeNode<K, V> getNode(K key) {
+        return getNode(key, overallRoot);
+    }
+    
+    private SearchTreeNode<K, V> getNode(K key, SearchTreeNode<K, V> node) {
+        if (node == null) {
+            return null;
+        } else if (key.equals(node.key)) {
+            return node;
+        } else if (key.compareTo(node.key) < 0) {
+            return getNode(key, node.left);
+        } else {
+            return getNode(key, node.right);
+        }
+    }
+    
+    public V remove(K key) {
         // TODO Auto-generated method stub
         return null;
     }
