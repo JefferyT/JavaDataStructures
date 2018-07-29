@@ -20,7 +20,6 @@ public class BST<K extends Comparable<K>, V> {
     public void clear() {
         size = 0;
         overallRoot = null;
-        
     }
     
     public boolean containsKey(Object key) {
