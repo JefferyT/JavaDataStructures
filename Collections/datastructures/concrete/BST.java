@@ -24,17 +24,7 @@ public class BST<K extends Comparable<K>, V> {
     
     public boolean containsKey(Object key) {
         // TODO Auto-generated method stub
-        return containsKey((K) key, overallRoot);
-    }
-    
-    private boolean containsKey(K key, SearchTreeNode<K, V> node) {
-        if (node == null) {
-            return false;
-        } else if (node.key.equals(key)) {
-            return true;
-        } else {
-            return containsKey(key, node.left) || containsKey(key, node.right);
-        }
+        return getNode((K) key) != null;
     }
 
     public boolean containsValue(Object arg0) {
@@ -43,7 +33,7 @@ public class BST<K extends Comparable<K>, V> {
     }
     
     public V get(K key) {
-        SearchTreeNode<K, V> node = getNode(key, overallRoot);
+        SearchTreeNode<K, V> node = getNode(key);
         if (node == null) {
             return null;
         }
@@ -58,7 +48,6 @@ public class BST<K extends Comparable<K>, V> {
     public Set<K> keySet() {
         // TODO Auto-generated method stub
         Set<K> keySet = new TreeSet<K>();
-        
         keySet(overallRoot, keySet);
         return keySet;
     }
@@ -72,24 +61,24 @@ public class BST<K extends Comparable<K>, V> {
     }
     
     public V put(K key, V value) {
-        STNWithValue<K, V> stn = put(overallRoot, key, value);
+        STNWithValue<K, V> stn = put(overallRoot, key, value, null);
         overallRoot = stn.node;
         return stn.otherValue;
     }
     
-    private STNWithValue<K, V> put(SearchTreeNode<K, V> node, K key, V value) {
+    private STNWithValue<K, V> put(SearchTreeNode<K, V> node, K key, V value, SearchTreeNode<K, V> parentNode) {
         STNWithValue<K, V> newN = new STNWithValue<K, V>(node, null);
         if (node == null) {
             size++;
-            return new STNWithValue<K, V>(new SearchTreeNode<K, V>(key, value), null);
+            return new STNWithValue<K, V>(new SearchTreeNode<K, V>(key, value, null, null, parentNode), null);
         } else if (node.key.compareTo(key) == 0) {
-            return new STNWithValue<K, V>(new SearchTreeNode<K, V>(key, value, node.left, node.right), node.value);
+            return new STNWithValue<K, V>(new SearchTreeNode<K, V>(key, value, node.left, node.right, node.parent), node.value);
         } else if (node.key.compareTo(key) > 0) {
-            STNWithValue<K, V> newNN = put(node.left, key, value);
+            STNWithValue<K, V> newNN = put(node.left, key, value, node);
             node.left = newNN.node;
             newN.otherValue = newNN.otherValue;
         } else if (node.key.compareTo(key) < 0) {
-            STNWithValue<K, V> newNN = put(node.right, key, value);
+            STNWithValue<K, V> newNN = put(node.right, key, value, node);
             node.right = newNN.node;
             newN.otherValue = newNN.otherValue;
         }
@@ -121,6 +110,7 @@ public class BST<K extends Comparable<K>, V> {
     
     public V remove(K key) {
         // TODO Auto-generated method stub
+    		
         return null;
     }
 
@@ -153,15 +143,18 @@ public class BST<K extends Comparable<K>, V> {
         private final V value;
         private SearchTreeNode<K, V> left;
         private SearchTreeNode<K, V> right;
-        private SearchTreeNode(K key, V value, SearchTreeNode<K, V> left, SearchTreeNode<K, V> right) {
+        private SearchTreeNode<K, V> parent;
+        private SearchTreeNode(K key, V value, SearchTreeNode<K, V> left, 
+        							SearchTreeNode<K, V> right, SearchTreeNode<K, V> parent) {
             this.key = key;
             this.value = value;
             this.left = left;
             this.right = right;
+            this.parent = parent;
         }
         
         private SearchTreeNode(K key, V value) {
-            this(key, value, null, null);
+            this(key, value, null, null, null);
         }
         
         public String toString() {

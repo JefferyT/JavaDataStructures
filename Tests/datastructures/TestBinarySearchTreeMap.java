@@ -31,7 +31,7 @@ class TestBinarySearchTreeMap {
     
     @Test
     void TestPutIncrementsSize() {
-        BST<Integer, String> tree = new BST<>();
+        BST<Integer, String> tree = new BST<Integer, String>();
         for (int i = 0; i < 5; i++) {
             tree.put(i, "aa");
         }
